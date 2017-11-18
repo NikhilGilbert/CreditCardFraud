@@ -1,3 +1,4 @@
+from matplotlib import pyplot
 from pandas import set_option
 from sklearn.preprocessing import Normalizer
 from numpy import set_printoptions
@@ -6,7 +7,6 @@ import numpy
 
 file = "HR_comma_sep.csv"
 data = pd.read_csv(file)
-
 
 def make_numeric(df):
     columns = df.columns.values
@@ -32,7 +32,8 @@ def make_numeric(df):
 make_numeric(data)
 
 # We removed any data that has null values first
-data.dropna()
+data = data.dropna()
+data = data.drop_duplicates(subset=None, keep='first', inplace=False)
 # Check explicitly for each headings value type
 types = data.dtypes
 
@@ -51,6 +52,7 @@ data_correlation = data.corr(method='pearson')
 skew = data.skew()
 # Density plots  for visual distributions
 data.plot(kind='density', subplots=True, layout=(3, 4), sharex=False)
+pyplot.show()
 
 array = data.values
 
@@ -59,16 +61,15 @@ Y = array[:, 6]
 
 scaler = Normalizer().fit(X)
 normalizedX = scaler.transform(X)
+set_printoptions(precision=3)
 
-print((X[0]))
-print(Y)
-
-# print(description)
-# print('\n')
-# print(class_counts)
-# print('\n')
-# print(data_correlation)
-# print('\n')
-# # use log transformations for very skewed data
-# print(skew)
-# print('\n')
+print(description)
+print('\n')
+print(class_counts)
+print('\n')
+print(data_correlation)
+print('\n')
+# use log transformations for very skewed data
+print(skew)
+print('\n')
+print(normalizedX[0:5, :])
